@@ -4,10 +4,9 @@ import { useEffect, useState } from "react";
 import { useMutation } from "@apollo/client";
 import { CREATE_TASK } from "../graphql/mutations";
 import { useRouter } from "next/navigation";
-import withAdmin from "../hoc/withAdmin";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 import { fetchUsers } from "../../redux/slices/usersSlice";
-import { RootState } from "../../redux/store";
+// import { RootState } from "../../redux/store";
 import { useAppDispatch } from "../../redux/hooks";
 
 function AddTask() {
@@ -16,9 +15,8 @@ function AddTask() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const [createTask, { error }] = useMutation(CREATE_TASK);
-  const [assignedTo, setAssignedTo] = useState("");
   // Fetch users from Redux state
-  const { users, status } = useSelector((state: RootState) => state.users);
+  // const { users, status } = useSelector((state: RootState) => state.users);
   useEffect(() => {
     dispatch(fetchUsers());
   }, [dispatch]);

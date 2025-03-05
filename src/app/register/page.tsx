@@ -18,7 +18,7 @@ export default function Register() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const { data } = await register({ variables: formData });
+      // const { data } = await register({ variables: formData });
       router.push("/login");
     } catch (err) {
       console.error("Login failed", err);

@@ -34,8 +34,11 @@ export const fetchUsers = createAsyncThunk<User[], void>(
       const { data } = await client.query({ query: GET_ALL_USERS });
       console.log(data, "<----data");
       return data.users;
-    } catch (error: any) {
-      return rejectWithValue(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        return rejectWithValue(error.message);
+      }
+      return rejectWithValue("An unknown error occurred");
     }
   }
 );

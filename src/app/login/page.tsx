@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { useMutation } from "@apollo/client";
 import { LOGIN_USER } from "../graphql/mutations";
 import { useRouter } from "next/navigation";

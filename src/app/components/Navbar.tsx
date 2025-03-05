@@ -2,11 +2,11 @@
 import React, { useEffect, useState } from "react";
 
 const Navbar: React.FC = () => {
-  const [user, setUser] = useState("");
+  const [user, setUser] = useState<string>("");
 
   useEffect(() => {
-    const user: any = localStorage.getItem("token");
-    setUser(user);
+    const token = localStorage.getItem("token");
+    setUser(token || "");
   }, []);
 
   const handleLogout = () => {
@@ -70,12 +70,12 @@ const Navbar: React.FC = () => {
                     Login
                   </a>
                 ) : (
-                  <a
+                  <button
                     onClick={handleLogout}
                     className="text-white hover:text-gray-300 px-3 py-2 rounded-md text-sm font-medium"
                   >
                     Logout
-                  </a>
+                  </button>
                 )}
               </div>
             </div>

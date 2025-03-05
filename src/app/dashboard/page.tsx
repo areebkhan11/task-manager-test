@@ -5,12 +5,21 @@ import { GET_TASKS } from "../graphql/queries";
 import { DELETE_TASK, EDIT_TASK } from "../graphql/mutations";
 import { useState } from "react";
 
+// Define Task type
+interface Task {
+  id: string;
+  title: string;
+  description: string;
+}
+
 export default function Dashboard() {
-  const { data, loading, refetch } = useQuery(GET_TASKS);
+  // Type the useQuery hook properly
+  const { data, loading, refetch } = useQuery<{ tasks: Task[] }>(GET_TASKS);
   const [deleteTask] = useMutation(DELETE_TASK);
   const [editTask] = useMutation(EDIT_TASK);
 
-  const [editingTask, setEditingTask] = useState<{ id: string; title: string; description: string } | null>(null);
+  // State for editing a task
+  const [editingTask, setEditingTask] = useState<Task | null>(null);
   const [newTitle, setNewTitle] = useState("");
   const [newDescription, setNewDescription] = useState("");
 
@@ -27,7 +36,7 @@ export default function Dashboard() {
   };
 
   // Start Edit Mode
-  const startEditing = (task: any) => {
+  const startEditing = (task: Task) => {
     setEditingTask(task);
     setNewTitle(task.title);
     setNewDescription(task.description);
@@ -55,9 +64,9 @@ export default function Dashboard() {
     <div className="p-6 max-w-4xl mx-auto">
       <h2 className="text-3xl font-bold mb-6 text-center">My Assigned Tasks</h2>
       <ul className="space-y-4">
-        {data?.tasks?.map((task: any) => (
+        {data?.tasks?.map((task) => (
           <li key={task.id} className="flex justify-between p-4 bg-white shadow rounded-lg border">
-            <div>
+            <div className="flex-1">
               {editingTask?.id === task.id ? (
                 <>
                   <input
@@ -77,6 +86,12 @@ export default function Dashboard() {
                   >
                     Save
                   </button>
+                  <button
+                    onClick={() => setEditingTask(null)}
+                    className="text-gray-600 bg-gray-300 px-2 py-1 rounded mt-2 ml-2"
+                  >
+                    Cancel
+                  </button>
                 </>
               ) : (
                 <>
@@ -86,18 +101,22 @@ export default function Dashboard() {
               )}
             </div>
             <div className="flex space-x-2">
-              <button
-                onClick={() => startEditing(task)}
-                className="text-gray-600 p-2 cursor-pointer hover:text-blue-500"
-              >
-                Edit
-              </button>
-              <button
-                onClick={() => handleDelete(task.id)}
-                className="text-gray-600 cursor-pointer hover:text-red-500"
-              >
-                Delete
-              </button>
+              {!editingTask && (
+                <>
+                  <button
+                    onClick={() => startEditing(task)}
+                    className="text-gray-600 p-2 cursor-pointer hover:text-blue-500"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => handleDelete(task.id)}
+                    className="text-gray-600 cursor-pointer hover:text-red-500"
+                  >
+                    Delete
+                  </button>
+                </>
+              )}
             </div>
           </li>
         ))}
