@@ -1,12 +1,18 @@
 "use client";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 const Navbar: React.FC = () => {
+  const router = useRouter();
   const [user, setUser] = useState<string>("");
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     setUser(token || "");
+    if(!token){
+      router.push("/login")
+    }
+
   }, []);
 
   const handleLogout = () => {
